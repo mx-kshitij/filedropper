@@ -1,6 +1,47 @@
 /*
 Place your custom CSS here
 */
-.widget-hello-world {
+.dropzone {
+    padding: 10px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-color: #A7C9FB;
+    border-width: 1px;
+    border-color: #052F6B;
+    border-style: dashed;
+    margin-bottom: 16px;
 
+    > .fileSelectButton{
+        background: #146FF4;
+        color: white;
+        border: none;
+        padding: 5px 30px;
+        border-radius: 8px;
+    }
+    
+    > .fileSelectButton:hover{
+        background: #052F6B;
+    }
+
+    > .uploadImage{
+        height: 25px;
+        width: auto;
+    }
+
+    > .acceptedfiles{
+        color: slategrey;
+        font-size: 12px;
+        padding: 5px;
+        margin: 0;
+    }
+}
+
+
+.drag{
+    background-color: #146FF4;
+    color: white;
 }

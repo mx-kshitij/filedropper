@@ -19,5 +19,35 @@
                 <description>Action to be performed when a new file is dropped. Choose nanoflow.</description>
             </property>
         </propertyGroup>
+        <propertyGroup caption="Customization">
+            <property key="defaultText" type="string" required="true" defaultValue="Drag 'n' drop some files here, or click to select files">
+                <caption>Default text</caption>
+                <description>Text to be shown by default on render</description>
+            </property>
+            <property key="dragText" type="string" required="true" defaultValue="Drop the files here ...">
+                <caption>On drag text</caption>
+                <description>Text to be shown on file drag</description>
+            </property>
+            <property key="buttonText" type="string" required="true" defaultValue="Select files">
+                <caption>File select button text</caption>
+                <description></description>
+            </property>
+            <property key="uploadImage" type="image" required="false">
+                <caption>UploadIcon</caption>
+                <description></description>
+            </property>
+            <property key="maxFileSize" type="integer" required="true" defaultValue="5">
+                <caption>Max file size (Mbs)</caption>
+                <description></description>
+            </property>
+            <property key="acceptedFileTypes" type="string" required="false">
+                <caption>Accepted files type</caption>
+                <description>Please enter comma separated values. e.g. .png, .pdf, etc</description>
+            </property>
+            <property key="acceptedFilesText" type="string" required="false">
+                <caption>Text for files accepted</caption>
+                <description></description>
+            </property>
+        </propertyGroup>
     </properties>
 </widget>

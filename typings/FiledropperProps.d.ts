@@ -4,7 +4,7 @@
  * @author Mendix Widgets Framework Team
  */
 import { CSSProperties } from "react";
-import { ActionValue, EditableValue } from "mendix";
+import { ActionValue, DynamicValue, EditableValue, WebImage } from "mendix";
 
 export interface FiledropperContainerProps {
     name: string;
@@ -13,6 +13,13 @@ export interface FiledropperContainerProps {
     tabIndex?: number;
     fileDataAttr: EditableValue<string>;
     onDropAction?: ActionValue;
+    defaultText: string;
+    dragText: string;
+    buttonText: string;
+    uploadImage?: DynamicValue<WebImage>;
+    maxFileSize: number;
+    acceptedFileTypes: string;
+    acceptedFilesText: string;
 }
 
 export interface FiledropperPreviewProps {
@@ -26,4 +33,11 @@ export interface FiledropperPreviewProps {
     readOnly: boolean;
     fileDataAttr: string;
     onDropAction: {} | null;
+    defaultText: string;
+    dragText: string;
+    buttonText: string;
+    uploadImage: { type: "static"; imageUrl: string; } | { type: "dynamic"; entity: string; } | null;
+    maxFileSize: number | null;
+    acceptedFileTypes: string;
+    acceptedFilesText: string;
 }
