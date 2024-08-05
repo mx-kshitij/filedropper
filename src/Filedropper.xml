@@ -32,7 +32,19 @@
                 <caption>File select button text</caption>
                 <description></description>
             </property>
+            <property key="uploadImageType" type="enumeration" defaultValue="image">
+                <caption>Upload image type</caption>
+                <description></description>
+                <enumerationValues>
+                    <enumerationValue key="image">Image</enumerationValue>
+                    <enumerationValue key="icon">Icon</enumerationValue>
+                </enumerationValues>
+            </property>
             <property key="uploadImage" type="image" required="false">
+                <caption>Upload Image</caption>
+                <description></description>
+            </property>
+            <property key="uploadIcon" type="icon" required="false">
                 <caption>Upload Icon</caption>
                 <description></description>
             </property>

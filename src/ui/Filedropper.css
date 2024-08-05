@@ -32,6 +32,10 @@ Place your custom CSS here
         width: auto;
     }
 
+    > .uploadIcon{
+        font-size: 25px;
+    }
+
     > .acceptedfiles{
         color: slategrey;
         font-size: 12px;

@@ -1,4 +1,5 @@
 import { FiledropperPreviewProps } from "../typings/FiledropperProps";
+import { hidePropertiesIn } from "@mendix/pluggable-widgets-tools";
 
 export type Platform = "web" | "desktop";
 
@@ -100,6 +101,14 @@ export function getProperties(_values: FiledropperPreviewProps, defaultPropertie
         delete defaultProperties.properties.myOtherProperty;
     }
     */
+    const propsToHide: Array<keyof FiledropperPreviewProps> = [];
+    if(_values.uploadImageType === "icon"){
+      propsToHide.push("uploadImage");
+    }
+    else{
+      propsToHide.push("uploadIcon");
+    }
+    hidePropertiesIn(defaultProperties, _values, propsToHide);
     return defaultProperties;
 }
 
