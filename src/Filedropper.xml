@@ -20,17 +20,29 @@
             </property>
         </propertyGroup>
         <propertyGroup caption="Customization">
-            <property key="defaultText" type="string" required="true" defaultValue="Drag 'n' drop some files here, or click to select files">
+            <property key="defaultText" type="textTemplate" required="false" >
                 <caption>Default text</caption>
                 <description>Text to be shown by default on render</description>
+                <translations>
+                    <translation lang="en_US">Drag 'n' drop some files here, or click to select files</translation>
+                    <translation lang="nl_NL">Sleep en zet hier enkele bestanden neer, of klik om bestanden te selecteren</translation>
+                </translations>
             </property>
-            <property key="dragText" type="string" required="true" defaultValue="Drop the files here ...">
+            <property key="dragText" type="textTemplate" required="false" >
                 <caption>On drag text</caption>
                 <description>Text to be shown on file drag</description>
+                <translations>
+                    <translation lang="en_US">Drop the files here ...</translation>
+                    <translation lang="nl_NL">Zet de bestanden hier neer ...</translation>
+                </translations>
             </property>
-            <property key="buttonText" type="string" required="true" defaultValue="Select files">
+            <property key="buttonText" type="textTemplate" required="false" >
                 <caption>File select button text</caption>
                 <description></description>
+                <translations>
+                    <translation lang="en_US">Select files</translation>
+                    <translation lang="nl_NL">Selecteer bestand</translation>
+                </translations>
             </property>
             <property key="uploadImageType" type="enumeration" defaultValue="image">
                 <caption>Upload image type</caption>
@@ -57,9 +69,29 @@
                 <description>Please enter comma separated values. e.g. image/png, image/jpg, application/pdf, etc. Mime types - https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
                 </description>
             </property>
-            <property key="acceptedFilesText" type="string" required="false">
+            <property key="acceptedFilesText" type="textTemplate" required="false">
                 <caption>Text for files accepted</caption>
                 <description></description>
+                <translations>
+                    <translation lang="en_US">File types accepted: </translation>
+                    <translation lang="nl_NL">Geaccepteerde bestandstypen: </translation>
+                </translations>
+            </property>
+            <property key="acceptedFileSizeText" type="textTemplate" required="false">
+                <caption>Max files size text</caption>
+                <description></description>
+                <translations>
+                    <translation lang="en_US">Max file size: </translation>
+                    <translation lang="nl_NL">Maximale bestandsgrootte: </translation>
+                </translations>
+            </property>
+            <property key="rejectedFilesText" type="textTemplate" required="false">
+                <caption>Rejected files validation text</caption>
+                <description></description>
+                <translations>
+                    <translation lang="en_US">Files not accepted: </translation>
+                    <translation lang="nl_NL">Bestanden niet geaccepteerd: </translation>
+                </translations>
             </property>
         </propertyGroup>
     </properties>

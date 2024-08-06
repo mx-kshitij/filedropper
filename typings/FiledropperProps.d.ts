@@ -15,15 +15,17 @@ export interface FiledropperContainerProps {
     tabIndex?: number;
     fileDataAttr: EditableValue<string>;
     onDropAction?: ActionValue;
-    defaultText: string;
-    dragText: string;
-    buttonText: string;
+    defaultText?: DynamicValue<string>;
+    dragText?: DynamicValue<string>;
+    buttonText?: DynamicValue<string>;
     uploadImageType: UploadImageTypeEnum;
     uploadImage?: DynamicValue<WebImage>;
     uploadIcon?: DynamicValue<WebIcon>;
     maxFileSize: number;
     acceptedFileTypes: string;
-    acceptedFilesText: string;
+    acceptedFilesText?: DynamicValue<string>;
+    acceptedFileSizeText?: DynamicValue<string>;
+    rejectedFilesText?: DynamicValue<string>;
 }
 
 export interface FiledropperPreviewProps {
@@ -46,4 +48,6 @@ export interface FiledropperPreviewProps {
     maxFileSize: number | null;
     acceptedFileTypes: string;
     acceptedFilesText: string;
+    acceptedFileSizeText: string;
+    rejectedFilesText: string;
 }
