@@ -1,6 +1,6 @@
-import { ReactElement, createElement, useCallback, useState, useEffect } from "react";
-import { FileRejection, useDropzone } from 'react-dropzone';
+import { ReactElement, createElement } from "react";
 import { ValueStatus } from 'mendix';
+import { FileDropperUI } from "./components/FileDropperUI";
 import { FiledropperContainerProps } from "../typings/FiledropperProps";
 
 import "./ui/Filedropper.css";
@@ -26,81 +26,8 @@ export function Filedropper({
         return <div />;
     }
 
-    const [showValidation, setShowValidation] = useState(false);
-    const [validationMessage, setValidationMessage] = useState('');
-    const [defaultTextToDisplay, setDefaultTextToDisplay] = useState("Drag 'n' drop some files here, or click to select files");
-    const [dragTextToDisplay, setDragTextToDisplay] = useState("Drop the files here ...");
-    const [buttonTextToDisplay, setButtonTextToDisplay] = useState("Select files");
-    const [acceptedFilesTextToDisplay, setAcceptedFilesTextToDisplay] = useState("");
-    const [acceptedFileSizeTextToDisplay, setAcceptedFileSizeTextToDisplay] = useState("");
-    // const [rejectedFilesTextToDisplay, setRejectedFilesTextToDisplay] = useState("");
-
-    useEffect(() => {
-        if(defaultText?.value){
-            setDefaultTextToDisplay(defaultText?.value);
-        }
-        if(dragText?.value){
-            setDragTextToDisplay(dragText?.value);
-        }
-        if(buttonText?.value){
-            setButtonTextToDisplay(buttonText?.value);
-        }
-        acceptedFilesText?.value
-            ? setAcceptedFilesTextToDisplay(acceptedFilesText?.value)
-            : setAcceptedFilesTextToDisplay("File types accepted: " + {acceptedFileTypes})
-
-        acceptedFileSizeText?.value
-            ? setAcceptedFileSizeTextToDisplay(acceptedFileSizeText?.value)
-            : setAcceptedFileSizeTextToDisplay("Max file size: " + {acceptedFileTypes})
-    },[])
-
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        let fileDataObj: { name: string; objectUrl: string; }[] = [];
-        acceptedFiles.forEach((curFile) => {
-            let curObj = {
-                "name": curFile.name,
-                "objectUrl": URL.createObjectURL(curFile)
-            };
-            fileDataObj.push(curObj);
-        })
-        fileDataAttr.setValue(JSON.stringify(fileDataObj));
-        if (fileDataObj.length > 0 && onDropAction != undefined && onDropAction.canExecute && !onDropAction.isExecuting) {
-            onDropAction.execute();
-        }
-        setShowValidation(false);
-    }, [])
-
-    const onDropRejected = useCallback((rejectedFiles: FileRejection[]) => {
-        let rejectFileNames = "";
-        for (let curFile of rejectedFiles) {
-            let fileName = curFile.file.name;
-            rejectFileNames === "" ? rejectFileNames = fileName : rejectFileNames += ", " + fileName;
-        }
-        let validationText = rejectedFilesText?.value ? rejectedFilesText?.value : "Files rejected: ";
-        setValidationMessage(`${validationText} ${rejectFileNames}`);
-        setShowValidation(true);
-    }, []);
-
-    const sizeInBytes = maxFileSize * Math.pow(1024, 2);
     const getAcceptedFileTypes = () => {
-        let valueToReturn = {};
-        let fileTypes = acceptedFileTypes.split(",");
-        for (let fileType of fileTypes) {
-            //@ts-ignore
-            valueToReturn[fileType.trim()] = [];
-        }
-        return valueToReturn;
-    }
-
-    const acceptedFilesString = () => {
-        if (acceptedFilesText)
-            return <p className="acceptedfiles">{acceptedFilesTextToDisplay} {acceptedFileSizeTextToDisplay}</p>;
-        else {
-            if (acceptedFileTypes)
-                return <p className="acceptedfiles">{acceptedFilesTextToDisplay} {acceptedFileSizeTextToDisplay}</p>;
-            else
-                return <p className="acceptedfiles">{acceptedFileSizeTextToDisplay}</p>;;
-        }
+        return Array.from(acceptedFileTypes.split(","));
     }
 
     const renderUploadImage = () => {
@@ -118,37 +45,21 @@ export function Filedropper({
         }
     }
 
-    const renderDropzone = () => {
-        return isDragActive ?
-            <div className="dropzone drag"><p>{dragTextToDisplay}</p></div>
-            :
-            <div className="dropzone">
-                {renderUploadImage()}
-                <p>{defaultTextToDisplay}</p>
-                <button type="button" onClick={open} className="fileSelectButton">
-                    {buttonTextToDisplay}
-                </button>
-                {acceptedFilesString()}
-            </div>
-    }
-
-    const renderValidation = () => {
-        return showValidation ?
-            <div className="alert alert-danger mx-validation-msg">
-                {validationMessage}
-            </div>
-            : <div />
-    }
-
-    const { getRootProps, getInputProps, open, isDragActive } = useDropzone({ accept: getAcceptedFileTypes(), onDrop, onDropRejected, maxSize: sizeInBytes })
-
     return (
-        <div {...getRootProps()}>
-            <input {...getInputProps()} />
-            <div>
-                {renderDropzone()}
-                {renderValidation()}
-            </div>
+        <div className="dropzoneWrapper">
+            <FileDropperUI
+                fileDataAttr={fileDataAttr}
+                onDropAction={onDropAction}
+                defaultText={defaultText ? defaultText.value : "Drag 'n' drop some files here, or click to select files"}
+                dragText={dragText ? dragText.value : "Drop the files here ..."}
+                buttonText={buttonText ? buttonText.value : "Select files"}
+                uploadImage={renderUploadImage()}
+                maxFileSize={maxFileSize}
+                acceptedFileTypes={getAcceptedFileTypes()}
+                acceptedFilesText={acceptedFilesText ? acceptedFilesText?.value : `File types accepted: ${acceptedFileTypes}`}
+                acceptedFileSizeText={acceptedFileSizeText ? acceptedFileSizeText.value : `Max file size: ${maxFileSize} Mb`}
+                rejectedFilesText={rejectedFilesText ? rejectedFilesText.value : `File rejected`}
+            />
         </div>
     )
 }
