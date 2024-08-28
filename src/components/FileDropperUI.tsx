@@ -42,7 +42,7 @@ export function FileDropperUI({
     const sizeInBytes = maxFileSize * Math.pow(1024, 2);
 
     const validateFile = (file: File) => {
-        if(!acceptedFileTypes.find((item) => item.toLowerCase() === file.type.toLowerCase())){
+        if(!acceptedFileTypes.find((item) => item.toLowerCase().trim() === file.type.toLowerCase().trim())){
             rejectedFiles.push(file.name);
             return false;
         }
