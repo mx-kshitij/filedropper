@@ -58,8 +58,13 @@ export function FileDropperUI({
     const handleFiles = (files: File[]) => {
         const fileList = Array.from(files);
         fileList.forEach(file => {
-            if(validateFile(file)){
+            if(acceptedFileTypes[0] === "" ){
                 filesToReturn.push(file);
+            }
+            else{
+                if(validateFile(file)){
+                    filesToReturn.push(file);
+                }
             }
         })
 
