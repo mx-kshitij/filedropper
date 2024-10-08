@@ -19,11 +19,10 @@ export function Filedropper({
     maxNumFilesToUpload,
     acceptedFileTypes,
     acceptedFilesText,
-    acceptedFileSizeText,
-    rejectedFilesText
+    acceptedFileSizeText
 }: FiledropperContainerProps): ReactElement {
 
-    if (fileDataAttr === null || fileDataAttr === undefined || fileDataAttr.status != ValueStatus.Available || defaultText?.status != ValueStatus.Available || dragText?.status != ValueStatus.Available || buttonText?.status != ValueStatus.Available || acceptedFilesText?.status != ValueStatus.Available || acceptedFileSizeText?.status != ValueStatus.Available || rejectedFilesText?.status != ValueStatus.Available) {
+    if (fileDataAttr === null || fileDataAttr === undefined || fileDataAttr.status != ValueStatus.Available || defaultText?.status != ValueStatus.Available || dragText?.status != ValueStatus.Available || buttonText?.status != ValueStatus.Available || acceptedFilesText?.status != ValueStatus.Available || acceptedFileSizeText?.status != ValueStatus.Available ) {
         return <div />;
     }
 
@@ -60,7 +59,6 @@ export function Filedropper({
                 acceptedFileTypes={getAcceptedFileTypes()}
                 acceptedFilesText={acceptedFilesText ? acceptedFilesText?.value : `File types accepted: ${acceptedFileTypes}`}
                 acceptedFileSizeText={acceptedFileSizeText ? acceptedFileSizeText.value : `Max file size: ${maxFileSize} Mb`}
-                rejectedFilesText={rejectedFilesText ? rejectedFilesText.value : `File rejected`}
             />
         </div>
     )

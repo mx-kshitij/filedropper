@@ -15,7 +15,6 @@ export interface FileDropperUIProps {
     acceptedFileTypes: string[];
     acceptedFilesText: string;
     acceptedFileSizeText: string;
-    rejectedFilesText: string;
 };
 
 interface RejectedFile {
@@ -34,13 +33,11 @@ export function FileDropperUI({
     maxNumFilesToUpload,
     acceptedFileTypes,
     acceptedFilesText,
-    acceptedFileSizeText,
-    // rejectedFilesText
+    acceptedFileSizeText
 }: FileDropperUIProps): ReactElement {
 
     const [dragActive, setDragActive] = useState(false);
     const [showValidation, setShowValidation] = useState(false);
-    // const [fileCount, setFileCount] = useState(0);
     const [validationMessage, setValidationMessage] = useState('');
     const inputRef = useRef(null);
     const drop = useRef(null);
@@ -111,7 +108,6 @@ export function FileDropperUI({
                 })
                 valCountMsg = "Max file count exceeded: " + valCountMsg;
             }
-            // setValidationMessage(`${rejectedFilesText}${rejectedFiles.toString()}`);
             setValidationMessage(
                 `${valTypeMsg}${valSizeMsg}${valCountMsg}`
             )

@@ -26,7 +26,6 @@ export interface FiledropperContainerProps {
     acceptedFileTypes: string;
     acceptedFilesText?: DynamicValue<string>;
     acceptedFileSizeText?: DynamicValue<string>;
-    rejectedFilesText?: DynamicValue<string>;
 }
 
 export interface FiledropperPreviewProps {
@@ -51,5 +50,4 @@ export interface FiledropperPreviewProps {
     acceptedFileTypes: string;
     acceptedFilesText: string;
     acceptedFileSizeText: string;
-    rejectedFilesText: string;
 }

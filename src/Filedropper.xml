@@ -89,14 +89,6 @@
                     <translation lang="nl_NL">Maximale bestandsgrootte: </translation>
                 </translations>
             </property>
-            <property key="rejectedFilesText" type="textTemplate" required="false">
-                <caption>Rejected files validation text</caption>
-                <description></description>
-                <translations>
-                    <translation lang="en_US">Files not accepted: </translation>
-                    <translation lang="nl_NL">Bestanden niet geaccepteerd: </translation>
-                </translations>
-            </property>
         </propertyGroup>
     </properties>
 </widget>
