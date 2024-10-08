@@ -11,11 +11,17 @@ export interface FileDropperUIProps {
     buttonText: string;
     uploadImage?: any;
     maxFileSize: number;
+    maxNumFilesToUpload: number;
     acceptedFileTypes: string[];
     acceptedFilesText: string;
     acceptedFileSizeText: string;
     rejectedFilesText: string;
 };
+
+interface RejectedFile {
+    name: string;
+    reason: "Type" | "Size" |"Count";
+}
 
 export function FileDropperUI({
     fileDataAttr,
@@ -25,32 +31,39 @@ export function FileDropperUI({
     buttonText,
     uploadImage,
     maxFileSize,
+    maxNumFilesToUpload,
     acceptedFileTypes,
     acceptedFilesText,
     acceptedFileSizeText,
-    rejectedFilesText
+    // rejectedFilesText
 }: FileDropperUIProps): ReactElement {
 
     const [dragActive, setDragActive] = useState(false);
     const [showValidation, setShowValidation] = useState(false);
+    // const [fileCount, setFileCount] = useState(0);
     const [validationMessage, setValidationMessage] = useState('');
     const inputRef = useRef(null);
     const drop = useRef(null);
     const filesToReturn: File[] = [];
-    const rejectedFiles: string[] = [];
+    const rejectedFiles: RejectedFile[] = [];
+    let fileCount = 1;
 
     const sizeInBytes = maxFileSize * Math.pow(1024, 2);
 
     const validateFile = (file: File) => {
-        if(!acceptedFileTypes.find((item) => item.toLowerCase().trim() === file.type.toLowerCase().trim())){
-            rejectedFiles.push(file.name);
+        if (acceptedFileTypes[0] != "" && (!acceptedFileTypes.find((item) => item.toLowerCase().trim() === file.type.toLowerCase().trim()))) {
+            rejectedFiles.push({name: file.name, reason: "Type"});
             return false;
         }
-        else if(file.size > sizeInBytes){
-            rejectedFiles.push(file.name);
+        else if (file.size > sizeInBytes) {
+            rejectedFiles.push({name: file.name, reason: "Size"});
             return false;
         }
-        else{
+        else if(fileCount > maxNumFilesToUpload) {
+            rejectedFiles.push({name: file.name, reason: "Count"});
+            return false;
+        }
+        else {
             return true;
         }
     }
@@ -58,16 +71,11 @@ export function FileDropperUI({
     const handleFiles = (files: File[]) => {
         const fileList = Array.from(files);
         fileList.forEach(file => {
-            if(acceptedFileTypes[0] === "" ){
+            if (validateFile(file)) {
                 filesToReturn.push(file);
-            }
-            else{
-                if(validateFile(file)){
-                    filesToReturn.push(file);
-                }
+                fileCount = fileCount + 1;
             }
         })
-
         let fileDataObj: { name: string; objectUrl: string; }[] = [];
         filesToReturn.forEach((curFile) => {
             let curObj = {
@@ -80,14 +88,39 @@ export function FileDropperUI({
         if (fileDataObj.length > 0 && onDropAction != undefined && onDropAction.canExecute && !onDropAction.isExecuting) {
             onDropAction.execute();
         }
-        if(rejectedFiles.length){
-            setValidationMessage(`${rejectedFilesText} ${rejectedFiles.toString()}`);
+        if (rejectedFiles.length) {
+            let typeRejects = rejectedFiles.filter(item => item.reason === "Type");
+            let valTypeMsg = "", valSizeMsg = "", valCountMsg = "";
+            if (typeRejects.length > 0){
+                typeRejects.forEach(item => {
+                    valTypeMsg === "" ? valTypeMsg = item.name : valTypeMsg = valTypeMsg += ", " + item.name;
+                })
+                valTypeMsg = "Invalid file type: " + valTypeMsg + "\n";
+            }
+            let sizeRejects =  rejectedFiles.filter(item => item.reason === "Size");
+            if (sizeRejects.length > 0){
+                sizeRejects.forEach(item => {
+                    valSizeMsg === "" ? valSizeMsg = item.name : valSizeMsg = valSizeMsg += ", " + item.name;
+                })
+                valSizeMsg = "Invalid file size: " + valSizeMsg + "\n";
+            }
+            let countRejects =  rejectedFiles.filter(item => item.reason === "Count");
+            if (countRejects.length > 0){
+                countRejects.forEach(item => {
+                    valCountMsg === "" ? valCountMsg = item.name : valCountMsg = valCountMsg += ", " + item.name;
+                })
+                valCountMsg = "Max file count exceeded: " + valCountMsg;
+            }
+            // setValidationMessage(`${rejectedFilesText}${rejectedFiles.toString()}`);
+            setValidationMessage(
+                `${valTypeMsg}${valSizeMsg}${valCountMsg}`
+            )
             setShowValidation(true);
-            setTimeout(()=>{
+            setTimeout(() => {
                 setShowValidation(false);
-            },5000)
+            }, 5000)
         }
-        else{
+        else {
             setShowValidation(false);
         }
     }
@@ -140,10 +173,10 @@ export function FileDropperUI({
             <input ref={inputRef} type="file" id="input-file-upload" multiple={true} onChange={handleChange} />
             <label htmlFor="input-file-upload" className={dragActive ? "dropzone drag" : "dropzone"}>
                 <div>
-                    {dragActive ? <div/> : uploadImage}
+                    {dragActive ? <div /> : uploadImage}
                     <p>{dragActive ? dragText : defaultText}</p>
-                    <button className={dragActive ? "fileSelectButton-drag" :"fileSelectButton"} onClick={onButtonClick}>{buttonText}</button>
-                    <p className={dragActive ? "acceptedfiles-drag" :"acceptedfiles"}>{acceptedFilesText} {acceptedFileSizeText}</p>
+                    <button className={dragActive ? "fileSelectButton-drag" : "fileSelectButton"} onClick={onButtonClick}>{buttonText}</button>
+                    <p className={dragActive ? "acceptedfiles-drag" : "acceptedfiles"}>{acceptedFilesText} {acceptedFileSizeText}</p>
                 </div>
             </label>
             {renderValidation()}

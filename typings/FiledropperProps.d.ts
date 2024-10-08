@@ -22,6 +22,7 @@ export interface FiledropperContainerProps {
     uploadImage?: DynamicValue<WebImage>;
     uploadIcon?: DynamicValue<WebIcon>;
     maxFileSize: number;
+    maxNumFilesToUpload: number;
     acceptedFileTypes: string;
     acceptedFilesText?: DynamicValue<string>;
     acceptedFileSizeText?: DynamicValue<string>;
@@ -46,6 +47,7 @@ export interface FiledropperPreviewProps {
     uploadImage: { type: "static"; imageUrl: string; } | { type: "dynamic"; entity: string; } | null;
     uploadIcon: { type: "glyph"; iconClass: string; } | { type: "image"; imageUrl: string; iconUrl: string; } | { type: "icon"; iconClass: string; } | undefined;
     maxFileSize: number | null;
+    maxNumFilesToUpload: number | null;
     acceptedFileTypes: string;
     acceptedFilesText: string;
     acceptedFileSizeText: string;

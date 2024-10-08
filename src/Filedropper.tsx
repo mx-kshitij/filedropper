@@ -16,6 +16,7 @@ export function Filedropper({
     uploadImage,
     uploadIcon,
     maxFileSize,
+    maxNumFilesToUpload,
     acceptedFileTypes,
     acceptedFilesText,
     acceptedFileSizeText,
@@ -55,6 +56,7 @@ export function Filedropper({
                 buttonText={buttonText ? buttonText.value : "Select files"}
                 uploadImage={renderUploadImage()}
                 maxFileSize={maxFileSize}
+                maxNumFilesToUpload={maxNumFilesToUpload}
                 acceptedFileTypes={getAcceptedFileTypes()}
                 acceptedFilesText={acceptedFilesText ? acceptedFilesText?.value : `File types accepted: ${acceptedFileTypes}`}
                 acceptedFileSizeText={acceptedFileSizeText ? acceptedFileSizeText.value : `Max file size: ${maxFileSize} Mb`}

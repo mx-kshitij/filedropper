@@ -64,9 +64,13 @@
                 <caption>Max file size (Mbs)</caption>
                 <description></description>
             </property>
+            <property key="maxNumFilesToUpload" type="integer" required="true" defaultValue="5">
+                <caption>Max file count</caption>
+                <description>Number of files that can be uploaded at once</description>
+            </property>
             <property key="acceptedFileTypes" type="string" required="false">
                 <caption>Accepted files type</caption>
-                <description>Please enter comma separated values. e.g. image/png, image/jpg, application/pdf, etc. Mime types - https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+                <description>Leave empty to accept all files or enter comma separated values. e.g. image/png, image/jpg, application/pdf, etc. Mime types - https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
                 </description>
             </property>
             <property key="acceptedFilesText" type="textTemplate" required="false">
