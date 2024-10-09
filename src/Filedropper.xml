@@ -65,7 +65,7 @@
                 <description></description>
             </property>
             <property key="maxNumFilesToUpload" type="integer" required="true" defaultValue="5">
-                <caption>Max file allowed at once</caption>
+                <caption>Max files allowed at once</caption>
                 <description>Number of files that can be uploaded at once</description>
             </property>
             <property key="acceptedFileTypes" type="string" required="false">
