@@ -1,4 +1,4 @@
-import { ReactElement, createElement, useState, useRef } from "react";
+import { ReactElement, createElement, useState, useRef, useEffect } from "react";
 import { EditableValue, ActionValue } from 'mendix';
 
 import "../ui/Filedropper.css";
@@ -39,6 +39,7 @@ export function FileDropperUI({
     const [dragActive, setDragActive] = useState(false);
     const [showValidation, setShowValidation] = useState(false);
     const [validationMessage, setValidationMessage] = useState('');
+    const [fileTypeWildcard, setFileTypeWildcard] = useState<string[]>([]);
     const inputRef = useRef(null);
     const drop = useRef(null);
     const filesToReturn: File[] = [];
@@ -46,9 +47,30 @@ export function FileDropperUI({
     let fileCount = 1;
 
     const sizeInBytes = maxFileSize * Math.pow(1024, 2);
+    // let fileTypeWildcard : string [] = [];
+    
+    useEffect(() => {
+        setFileTypeWildcard(acceptedFileTypes.filter(item => item.indexOf('*') > -1).map(wcitem => wcitem.substring(0,wcitem.indexOf('/')).toLowerCase().trim()));
+    }, [])
+
+    const isFileTypeValid = (fileType: string) =>{
+        // let valid = false;
+        if(fileTypeWildcard.length > 0){
+            for(let item of fileTypeWildcard){
+                if(fileType.includes(item)){
+                    return true;
+                }
+            }
+        }
+        if(acceptedFileTypes.find((item) => item.toLowerCase().trim() === fileType)){
+            return true;
+        }
+        return false;
+    }
 
     const validateFile = (file: File) => {
-        if (acceptedFileTypes[0] != "" && (!acceptedFileTypes.find((item) => item.toLowerCase().trim() === file.type.toLowerCase().trim()))) {
+        if(acceptedFileTypes[0] != "" && !isFileTypeValid(file.type.toLowerCase().trim())){
+        // if (acceptedFileTypes[0] != "" && (!acceptedFileTypes.find((item) => item.toLowerCase().trim() === file.type.toLowerCase().trim()))) {
             rejectedFiles.push({name: file.name, reason: "Type"});
             return false;
         }
