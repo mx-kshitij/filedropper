@@ -62,9 +62,14 @@ export function FileDropperUI({
                 }
             }
         }
-        if(acceptedFileTypes.find((item) => item.toLowerCase().trim() === fileType)){
+        if(acceptedFileTypes.find((item) => item === fileType)){
             return true;
         }
+        const extension = "." + fileType.split("/")[1];
+        if(acceptedFileTypes.find((item) => item === extension)){
+            return true;
+        }
+
         return false;
     }
 
@@ -188,7 +193,7 @@ export function FileDropperUI({
 
     return (
         <div ref={drop} onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}>
-            <input ref={inputRef} type="file" id="input-file-upload" multiple={true} onChange={handleChange} />
+            <input ref={inputRef} type="file" id="input-file-upload" accept={acceptedFileTypes.join(",")} multiple={true} onChange={handleChange} />
             <label htmlFor="input-file-upload" className={dragActive ? "dropzone drag" : "dropzone"}>
                 <div>
                     {dragActive ? <div /> : uploadImage}

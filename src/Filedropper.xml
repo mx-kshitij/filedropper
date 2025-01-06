@@ -70,7 +70,7 @@
             </property>
             <property key="acceptedFileTypes" type="string" required="false">
                 <caption>Accepted files type</caption>
-                <description>Leave empty to accept all files or enter comma separated values. e.g. image/png, image/jpg, application/pdf, etc. Wildcard accepted as image/*, application/*, etc. Mime types - https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+                <description>Leave empty to accept all files mime types or file extension enter comma separated values. e.g. image/png, image/jpg, application/pdf, etc. Wildcard accepted as image/*, application/*, .docx, .pdf etc. Mime types - https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
                 </description>
             </property>
             <property key="acceptedFilesText" type="textTemplate" required="false">
