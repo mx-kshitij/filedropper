@@ -19,7 +19,8 @@ export function Filedropper({
     maxNumFilesToUpload,
     acceptedFileTypes,
     acceptedFilesText,
-    acceptedFileSizeText
+    acceptedFileSizeText,
+    class: className
 }: FiledropperContainerProps): ReactElement {
 
     if (fileDataAttr === null || fileDataAttr === undefined || fileDataAttr.status != ValueStatus.Available || defaultText?.status != ValueStatus.Available || dragText?.status != ValueStatus.Available || buttonText?.status != ValueStatus.Available || acceptedFilesText?.status != ValueStatus.Available || acceptedFileSizeText?.status != ValueStatus.Available ) {
@@ -46,7 +47,7 @@ export function Filedropper({
     }
 
     return (
-        <div className="dropzoneWrapper">
+        <div className={"dropzoneWrapper " + className}>
             <FileDropperUI
                 fileDataAttr={fileDataAttr}
                 onDropAction={onDropAction}
