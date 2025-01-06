@@ -28,7 +28,7 @@ export function Filedropper({
     }
 
     const getAcceptedFileTypes = () => {
-        return Array.from(acceptedFileTypes.split(","));
+        return Array.from(acceptedFileTypes.split(","), type => type.toLowerCase().trim());
     }
 
     const renderUploadImage = () => {
