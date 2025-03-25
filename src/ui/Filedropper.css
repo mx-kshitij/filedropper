@@ -23,9 +23,13 @@ Place your custom CSS here
     border-width: 1px;
     border-color: #052f6b;
     border-style: dashed;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: background-color, border-color;
 
     > div {
         text-align: center;
+        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
 
         > .fileSelectButton {
             background: #146ff4;
@@ -33,10 +37,12 @@ Place your custom CSS here
             border: none;
             padding: 5px 30px;
             border-radius: 8px;
+            transition: all 0.3s ease-in-out;
         }
 
         > .fileSelectButton-drag{
             display: none;
+            transition: all 0.3s ease-in-out;
         }
 
         > .fileSelectButton:hover {
@@ -63,10 +69,12 @@ Place your custom CSS here
             font-size: 12px;
             padding: 5px;
             margin: 0;
+            transition: all 0.3s ease-in-out;
         }
 
         > .acceptedfiles-drag{
             display: none;
+            transition: all 0.3s ease-in-out;
         }
     }
 }
@@ -74,6 +82,7 @@ Place your custom CSS here
 .drag {
     background-color: #146ff4;
     color: white;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #input-file-upload {

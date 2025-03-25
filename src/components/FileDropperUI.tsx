@@ -1,4 +1,4 @@
-import { ReactElement, createElement, useState, useRef, useEffect } from "react";
+import { ReactElement, createElement, useState, useRef, useEffect, useCallback } from "react";
 import { EditableValue, ActionValue } from 'mendix';
 
 import "../ui/Filedropper.css";
@@ -22,6 +22,56 @@ interface RejectedFile {
     reason: "Type" | "Size" |"Count";
 }
 
+const useDragCounter = () => {
+    const [dragActive, setDragActive] = useState(false);
+    const dragCounter = useRef(0);
+    const timeoutRef = useRef<NodeJS.Timeout>();
+
+    const handleDrag = useCallback((e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Clear any existing timeout
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        if (e.type === "dragenter") {
+            dragCounter.current++;
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            dragCounter.current--;
+            if (dragCounter.current <= 0) {
+                dragCounter.current = 0; // Ensure counter doesn't go negative
+                timeoutRef.current = setTimeout(() => {
+                    setDragActive(false);
+                }, 50);
+            }
+        } else if (e.type === "dragover") {
+            setDragActive(true);
+        }
+    }, []);
+
+    const resetDragState = useCallback(() => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+        dragCounter.current = 0;
+        setDragActive(false);
+    }, []);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
+
+    return { dragActive, handleDrag, resetDragState };
+};
+
 export function FileDropperUI({
     fileDataAttr,
     onDropAction,
@@ -36,7 +86,7 @@ export function FileDropperUI({
     acceptedFileSizeText
 }: FileDropperUIProps): ReactElement {
 
-    const [dragActive, setDragActive] = useState(false);
+    const { dragActive, handleDrag, resetDragState } = useDragCounter();
     const [showValidation, setShowValidation] = useState(false);
     const [validationMessage, setValidationMessage] = useState('');
     const [fileTypeWildcard, setFileTypeWildcard] = useState<string[]>([]);
@@ -151,24 +201,13 @@ export function FileDropperUI({
             : <div />
     }
 
-    // handle drag events
-    const handleDrag = function (e: any) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.type === "dragenter" || e.type === "dragover") {
-            setDragActive(true);
-        } else if (e.type === "dragleave") {
-            setDragActive(false);
-        }
-    };
-
     // triggers when file is dropped
-    const handleDrop = function (e: any) {
+    const handleDrop = function (e: React.DragEvent) {
         e.preventDefault();
         e.stopPropagation();
-        setDragActive(false);
+        resetDragState();
         if (e.dataTransfer.files) {
-            handleFiles(e.dataTransfer.files);
+            handleFiles(Array.from(e.dataTransfer.files));
         }
     };
 
@@ -176,7 +215,7 @@ export function FileDropperUI({
     const handleChange = function (e: any) {
         e.preventDefault();
         if (e.target.files) {
-            handleFiles(e.target.files);
+            handleFiles(Array.from(e.target.files));
         }
     };
 
@@ -187,17 +226,39 @@ export function FileDropperUI({
     };
 
     return (
-        <div ref={drop} onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}>
-            <input ref={inputRef} type="file" id="input-file-upload" multiple={true} onChange={handleChange} />
-            <label htmlFor="input-file-upload" className={dragActive ? "dropzone drag" : "dropzone"}>
+        <div 
+            ref={drop} 
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+        >
+            <input 
+                ref={inputRef}
+                type="file"
+                id="input-file-upload"
+                multiple={true}
+                onChange={handleChange}
+            />
+            <label 
+                htmlFor="input-file-upload"
+                className={dragActive ? "dropzone drag" : "dropzone"}
+            >
                 <div>
                     {dragActive ? <div /> : uploadImage}
                     <p>{dragActive ? dragText : defaultText}</p>
-                    <button className={dragActive ? "fileSelectButton-drag" : "fileSelectButton"} onClick={onButtonClick}>{buttonText}</button>
-                    <p className={dragActive ? "acceptedfiles-drag" : "acceptedfiles"}>{acceptedFilesText} {acceptedFileSizeText}</p>
+                    <button 
+                        className={dragActive ? "fileSelectButton-drag" : "fileSelectButton"} 
+                        onClick={onButtonClick}
+                    >
+                        {buttonText}
+                    </button>
+                    <p className={dragActive ? "acceptedfiles-drag" : "acceptedfiles"}>
+                        {acceptedFilesText} {acceptedFileSizeText}
+                    </p>
                 </div>
             </label>
             {renderValidation()}
         </div>
-    )
+    );
 }
