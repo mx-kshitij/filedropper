@@ -4,6 +4,7 @@ import { EditableValue, ActionValue } from 'mendix';
 import "../ui/Filedropper.css";
 
 export interface FileDropperUIProps {
+    name: string;
     fileDataAttr: EditableValue<string>;
     onDropAction: ActionValue | undefined;
     defaultText: string;
@@ -73,6 +74,7 @@ const useDragCounter = () => {
 };
 
 export function FileDropperUI({
+    name,
     fileDataAttr,
     onDropAction,
     defaultText,
@@ -236,12 +238,13 @@ export function FileDropperUI({
             <input 
                 ref={inputRef}
                 type="file"
-                id="input-file-upload"
+                id={name}
                 multiple={true}
                 onChange={handleChange}
+                className={"hidden"}
             />
             <label 
-                htmlFor="input-file-upload"
+                htmlFor={name}
                 className={dragActive ? "dropzone drag" : "dropzone"}
             >
                 <div>
