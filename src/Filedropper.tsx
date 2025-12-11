@@ -1,4 +1,4 @@
-import { ReactElement, createElement } from "react";
+import { ReactElement, createElement, useMemo } from "react";
 import { ValueStatus } from 'mendix';
 import { FileDropperUI } from "./components/FileDropperUI";
 import { FiledropperContainerProps } from "../typings/FiledropperProps";
@@ -47,10 +47,12 @@ export function Filedropper({
         }
     }
 
+    const uuid = useMemo(() => crypto.randomUUID(), []);
+
     return (
         <div className={"dropzoneWrapper " + className}>
             <FileDropperUI
-                name = {name + "input"}
+                name = {`${name}-input-${uuid}`}
                 fileDataAttr={fileDataAttr}
                 onDropAction={onDropAction}
                 defaultText={defaultText ? defaultText.value : "Drag 'n' drop some files here, or click to select files"}
