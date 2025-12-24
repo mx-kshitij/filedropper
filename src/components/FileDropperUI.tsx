@@ -94,6 +94,7 @@ export function FileDropperUI({
     const [fileTypeWildcard, setFileTypeWildcard] = useState<string[]>([]);
     const inputRef = useRef(null);
     const drop = useRef(null);
+    const [isPasteFocused, setIsPasteFocused] = useState(false);
     const filesToReturn: File[] = [];
     const rejectedFiles: RejectedFile[] = [];
     let fileCount = 1;
@@ -227,6 +228,50 @@ export function FileDropperUI({
         inputRef?.current?.click();
     };
 
+    // handles paste from clipboard
+    const handlePaste = (e: React.ClipboardEvent) => {
+        e.preventDefault();
+        const items = e.clipboardData.items;
+        const files: File[] = [];
+
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            
+            // Handle file items
+            if (item.kind === 'file') {
+                const file = item.getAsFile();
+                if (file) {
+                    files.push(file);
+                }
+            }
+        }
+
+        if (files.length > 0) {
+            handleFiles(files);
+        }
+    };
+
+    // Focus management for paste
+    useEffect(() => {
+        const dropElement = drop.current;
+        if (!dropElement) return;
+
+        const handleFocus = () => setIsPasteFocused(true);
+        const handleBlur = () => setIsPasteFocused(false);
+
+        //@ts-ignore
+        dropElement.addEventListener('focus', handleFocus);
+        //@ts-ignore
+        dropElement.addEventListener('blur', handleBlur);
+
+        return () => {
+            //@ts-ignore
+            dropElement.removeEventListener('focus', handleFocus);
+            //@ts-ignore
+            dropElement.removeEventListener('blur', handleBlur);
+        };
+    }, []);
+
     return (
         <div 
             ref={drop} 
@@ -234,6 +279,9 @@ export function FileDropperUI({
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
+            onPaste={handlePaste}
+            tabIndex={0}
+            className={isPasteFocused ? "dropzone-container focused" : "dropzone-container"}
         >
             <input 
                 ref={inputRef}

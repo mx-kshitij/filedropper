@@ -54,7 +54,7 @@ export function Filedropper({
                 name = {name + "input" + uniqueId}
                 fileDataAttr={fileDataAttr}
                 onDropAction={onDropAction}
-                defaultText={defaultText ? defaultText.value : "Drag 'n' drop some files here, or click to select files"}
+                defaultText={defaultText ? defaultText.value : "Drag 'n' drop some files, paste from clipboard or click to select files"}
                 dragText={dragText ? dragText.value : "Drop the files here ..."}
                 buttonText={buttonText ? buttonText.value : "Select files"}
                 uploadImage={renderUploadImage()}

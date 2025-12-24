@@ -7,6 +7,14 @@ Place your custom CSS here
     }
 }
 
+.dropzone-container {
+    outline: none;
+}
+
+.dropzone-container.focused .dropzone {
+    box-shadow: 0 0 0 3px rgba(20, 111, 244, 0.3);
+}
+
 .dropzone-validation {
     margin-top: 15px;
 }
