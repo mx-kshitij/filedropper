@@ -1,4 +1,4 @@
-import { ReactElement, createElement } from "react";
+import { ReactElement, createElement, useId } from "react";
 import { ValueStatus } from 'mendix';
 import { FileDropperUI } from "./components/FileDropperUI";
 import { FiledropperContainerProps } from "../typings/FiledropperProps";
@@ -23,6 +23,7 @@ export function Filedropper({
     acceptedFileSizeText,
     class: className
 }: FiledropperContainerProps): ReactElement {
+    const uniqueId = useId();
 
     if (fileDataAttr === null || fileDataAttr === undefined || fileDataAttr.status != ValueStatus.Available || defaultText?.status != ValueStatus.Available || dragText?.status != ValueStatus.Available || buttonText?.status != ValueStatus.Available || acceptedFilesText?.status != ValueStatus.Available || acceptedFileSizeText?.status != ValueStatus.Available ) {
         return <div />;
@@ -50,7 +51,7 @@ export function Filedropper({
     return (
         <div className={"dropzoneWrapper " + className}>
             <FileDropperUI
-                name = {name + "input"}
+                name = {name + "input" + uniqueId}
                 fileDataAttr={fileDataAttr}
                 onDropAction={onDropAction}
                 defaultText={defaultText ? defaultText.value : "Drag 'n' drop some files here, or click to select files"}
